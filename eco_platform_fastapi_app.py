@@ -33,7 +33,7 @@ load_dotenv()
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "postgresql+asyncpg://postgres:postgres@localhost:5432/eco_platform",
+    "postgresql+psycopg://postgres:virtual@localhost:5432/eco_platform",
 )
 JWT_SECRET = os.getenv("JWT_SECRET", "dev-secret-change-me")
 JWT_ALG = os.getenv("JWT_ALG", "HS256")
