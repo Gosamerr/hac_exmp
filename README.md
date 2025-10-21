@@ -14,7 +14,7 @@ python -m venv .venv
 pip install -r requirements.txt
 
 # создаем БД (из psql или любой GUI)
-#   CREATE DATABASE eco_platform;
+CREATE DATABASE eco_platform;
 
 # переменные окружения на сессию
 $env:DATABASE_URL="postgresql+asyncpg://postgres:postgres@localhost:5432/eco_platform"
