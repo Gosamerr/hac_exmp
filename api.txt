@@ -1,0 +1,223 @@
+ 1. Аутентификация
+
+ Схема: JWT Bearer token.
+ Все защищённые эндпоинты требуют заголовок:
+
+  ```
+  Authorization: Bearer <access_token>
+  ```
+ Токен возвращается при регистрации и логине.
+
+ Endpoints
+
+ `POST /auth/register` — регистрация
+  Body:
+
+  ```json
+  { "email": "ivan@example.com", "password": "secret", "name": "Иван" }
+  ```
+
+  Response:
+
+  ```json
+  {
+    "access_token": "eyJ...", "token_type": "bearer",
+    "user": { "id": "...", "email": "ivan@example.com", "name": "Иван", "points": 0 }
+  }
+  ```
+
+ `POST /auth/login` — логин
+  Body:
+
+  ```json
+  { "email": "ivan@example.com", "password": "secret" }
+  ```
+
+  Response — как при регистрации.
+
+ `GET /auth/me` — текущий профиль (Auth required)
+  Response:
+
+  ```json
+  { "id":"...", "email":"ivan@example.com", "name":"Иван", "points": 42 }
+  ```
+
+
+2. Основные сущности (JSON / Pydantic формы)
+
+ User (response)
+
+```json
+{
+  "id": "uuid",
+  "email": "string",
+  "name": "string|null",
+  "points": 0,
+  "created_at": "2025-10-15T12:00:00Z"
+}
+```
+
+ Category
+
+ fields:
+
+   `id` (int)
+   `key` (string, unique) — машинное имя, например `"transport_car"`
+   `title` (string) — человекочитаемое
+   `factor` (number) — коэффициент (kgCO2e per unit)
+   `unit` (string) — `per_rub` / `per_km` / `per_item`
+
+Response:
+
+```json
+{ "id": 1, "key":"groceries", "title":"Продукты", "factor": 0.0025, "unit":"per_rub" }
+```
+
+ Transaction (request)
+
+```json
+{
+  "category_key": "groceries",
+  "amount": 1200,
+  "currency": "RUB",
+  "metadata": { "merchant":"Magnet", "city":"Moscow" }
+}
+```
+
+ Transaction (response)
+
+```json
+{
+  "id":"uuid",
+  "user_id":"uuid",
+  "category_id":1,
+  "amount":1200,
+  "currency":"RUB",
+  "footprint_kg":3.000,
+  "metadata": {...}, # Можно пустым оставлять
+  "created_at":"2025-10-15T12:00:00Z"
+}
+```
+
+ Challenge
+
+```json
+{
+  "id":"uuid",
+  "title":"Пойти на работу пешком 3 дня",
+  "description":"Пройти не менее 3 км в день в рабочие дни",
+  "points_reward": 50,
+  "starts_at":"2025-10-10T00:00:00Z",
+  "ends_at":"2025-10-20T23:59:59Z"
+}
+```
+
+ Recycling point
+
+```json
+{
+  "id":"uuid",
+  "title":"Пункт приёма ТБО - Центр",
+  "description":"Пункт приема пластика и стекла",
+  "lat":56.95,
+  "lon":24.11,
+  "tags":["plastic","glass"]
+}
+```
+
+---
+
+ 4. Эндпоинты — описание, примеры и бизнес-логика
+
+> Все JSON-ответы имеют стандартные поля `status`/`detail` при ошибках; в успешных ответах — соответствующие объекты.
+
+ 4.1 Categories
+
+ `GET /categories` — список категорий (public).
+
+   Используется клиентом для выбора категории при отправке транзакции.
+   Response: `200 OK` — `[{category}, ...]`
+
+ `POST /categories` — добавить категорию (admin)
+
+   Body: `{ "key","title","factor","unit" }`
+   Response: `201 Created` — новая категория.
+
+Бизнес-заметка: коэффициенты можно корректировать админом; единицы (`unit`) определяют способ расчёта footprint.
+
+---
+
+ 4.2 Transactions
+
+ `POST /transactions` (Auth required)
+
+   Body: see Transaction (request).
+   Сервер:
+
+    1. Находит `category` по `category_key`. Если не найден — `400 Bad Request`.
+    2. Валидация `amount` > 0.
+    3. Вычисление `footprint_kg` (подробно в разделе "Бизнес-логика расчёта").
+    4. Сохранение записи `transactions`.
+    5. Возврат `201 Created` с объектом transaction (объект описан выше).
+   Response:
+
+    ```json
+    { "id": "...", "footprint_kg": 3.000, ... }
+    ```
+
+ `GET /transactions` (Auth required)
+
+   Query params: `from`, `to` (ISO datetime), `limit`, `offset`, `category_key`
+   Возвращает список user's transactions (пагинация).
+
+ `GET /transactions/summary` (Auth required)
+
+   Query params: `from`, `to`
+   Response:
+
+    ```json
+    {
+      "total_kg": 123.45,
+      "by_category": { "transport_car": 50.1, "groceries": 30.5 },
+      "count": 12
+    }
+    ```
+
+Бизнес-заметка: `transactions` — основной источник данных для профиля пользователя и лидербордов.
+
+---
+
+ 4.3 Challenges
+
+ `GET /challenges` — список (public).
+ `POST /challenges` — создать (admin).
+ `POST /challenges/{id}/join` (Auth required) — пользователь присоединяется.
+
+   Создаётся запись в `user_challenges` со статусом `joined`.
+ `POST /challenges/{id}/complete` (Auth required) — отметить выполненным.
+
+   Сервис проверяет, что пользователь был в `joined` и что `ends_at` не прошла (опционально).
+   При успешном completion:
+
+     статус → `completed`, `completed_at` = now.
+     начисление очков: `user.points += challenge.points_reward`.
+     возвращается `{ "status":"completed", "points_awarded": X, "user_points": Y }`.
+
+Бизнес-правило: начисление очков происходит однократно при завершении; повторные вызовы не дают дополнительных очков.
+
+---
+
+ 4.4 Recycling points
+
+ `GET /recycling_points` — список, поддерживает фильтр по `tags` и bbox (`lat_min`, `lat_max`, `lon_min`, `lon_max`).
+ `POST /recycling_points` — добавить (admin).
+
+Бизнес-заметка: точки используются на карте мобильного приложения как статические POI.
+
+---
+
+ 4.5 Health & Docs
+
+ `GET /health` — проверка статуса: возвращает `{ "db":"ok", "categories": N }`.
+ OpenAPI: `/docs` (FastAPI).
+
