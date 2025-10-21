@@ -1,0 +1,205 @@
+{
+    "step":  "health",
+    "resp":  {
+                 "db":  "ok",
+                 "categories":  8
+             },
+    "ts":  "2025-10-21T23:36:08.7992318+03:00"
+}
+{
+    "step":  "auth_register(FAILED)",
+    "resp":  {
+                 "error":  "{\"detail\":\"Email already registered\"}"
+             },
+    "ts":  "2025-10-21T23:36:08.8793999+03:00"
+}
+{
+    "step":  "auth_login",
+    "resp":  {
+                 "access_token":  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MWYwZTAyMi02ZGZjLTQ0MTQtOGNhYi0wYjNhMzA0NzhhZDYiLCJleHAiOjE3NjEwODI1Njh9.Lt70N7LZe2ECQXfOS0ECWc4nxqhQkXH4UL-pBMKaOks",
+                 "token_type":  "bearer",
+                 "user":  {
+                              "id":  "61f0e022-6dfc-4414-8cab-0b3a30478ad6",
+                              "email":  "loikliza4@gmail.com",
+                              "name":  "Liza",
+                              "points":  0,
+                              "created_at":  "2025-10-21T23:08:16.533873+03:00"
+                          }
+             },
+    "ts":  "2025-10-21T23:36:08.9002626+03:00"
+}
+{
+    "step":  "auth_me",
+    "resp":  {
+                 "id":  "61f0e022-6dfc-4414-8cab-0b3a30478ad6",
+                 "email":  "loikliza4@gmail.com",
+                 "name":  "Liza",
+                 "points":  0,
+                 "created_at":  "2025-10-21T23:08:16.533873+03:00"
+             },
+    "ts":  "2025-10-21T23:36:08.9111764+03:00"
+}
+{
+    "step":  "categories_list",
+    "resp":  {
+                 "value":  [
+                               {
+                                   "id":  1,
+                                   "key":  "groceries",
+                                   "title":  "??N?????N???N?N?",
+                                   "factor":  0.0025,
+                                   "unit":  "per_rub"
+                               },
+                               {
+                                   "id":  2,
+                                   "key":  "transport_car",
+                                   "title":  "????N???N??? ?°??N???",
+                                   "factor":  0.2,
+                                   "unit":  "per_km"
+                               },
+                               {
+                                   "id":  3,
+                                   "key":  "transport_bus",
+                                   "title":  "????N????±N?N?",
+                                   "factor":  0.1,
+                                   "unit":  "per_km"
+                               },
+                               {
+                                   "id":  4,
+                                   "key":  "transport_train",
+                                   "title":  "?????µ?·??",
+                                   "factor":  0.05,
+                                   "unit":  "per_km"
+                               },
+                               {
+                                   "id":  5,
+                                   "key":  "transport_plane",
+                                   "title":  "???°?????»N?N?",
+                                   "factor":  0.25,
+                                   "unit":  "per_km"
+                               },
+                               {
+                                   "id":  6,
+                                   "key":  "electronics",
+                                   "title":  "?­?»?µ??N?N??????????°",
+                                   "factor":  20.0,
+                                   "unit":  "per_item"
+                               },
+                               {
+                                   "id":  7,
+                                   "key":  "clothes",
+                                   "title":  "?????µ?¶???°",
+                                   "factor":  10.0,
+                                   "unit":  "per_item"
+                               },
+                               {
+                                   "id":  8,
+                                   "key":  "cafe",
+                                   "title":  "???°N??µ/N??µN?N???N??°??N?",
+                                   "factor":  0.004,
+                                   "unit":  "per_rub"
+                               }
+                           ],
+                 "Count":  8
+             },
+    "ts":  "2025-10-21T23:36:08.9264392+03:00"
+}
+{
+    "step":  "tx_create",
+    "resp":  {
+                 "id":  "d5b37d8b-2f38-4ab6-bd99-f2a8bba74320",
+                 "user_id":  "61f0e022-6dfc-4414-8cab-0b3a30478ad6",
+                 "category_id":  1,
+                 "amount":  1200.0,
+                 "currency":  "RUB",
+                 "footprint_kg":  3.0,
+                 "metadata":  {
+                                  "merchant":  "Magnit",
+                                  "city":  "Rostov"
+                              },
+                 "created_at":  "2025-10-21T23:36:08.942255+03:00"
+             },
+    "ts":  "2025-10-21T23:36:08.9495952+03:00"
+}
+{
+    "step":  "tx_list",
+    "resp":  {
+                 "value":  [
+                               {
+                                   "id":  "d5b37d8b-2f38-4ab6-bd99-f2a8bba74320",
+                                   "user_id":  "61f0e022-6dfc-4414-8cab-0b3a30478ad6",
+                                   "category_id":  1,
+                                   "amount":  1200.0,
+                                   "currency":  "RUB",
+                                   "footprint_kg":  3.0,
+                                   "metadata":  {
+                                                    "merchant":  "Magnit",
+                                                    "city":  "Rostov"
+                                                },
+                                   "created_at":  "2025-10-21T23:36:08.942255+03:00"
+                               },
+                               {
+                                   "id":  "be50cc99-3e69-4729-b0bc-4ea7f858b9c9",
+                                   "user_id":  "61f0e022-6dfc-4414-8cab-0b3a30478ad6",
+                                   "category_id":  2,
+                                   "amount":  10.0,
+                                   "currency":  "RUB",
+                                   "footprint_kg":  2.0,
+                                   "metadata":  {
+
+                                                },
+                                   "created_at":  "2025-10-21T23:15:53.452459+03:00"
+                               },
+                               {
+                                   "id":  "3462fea7-a820-4f91-bd50-6480e1b0ff5a",
+                                   "user_id":  "61f0e022-6dfc-4414-8cab-0b3a30478ad6",
+                                   "category_id":  1,
+                                   "amount":  1200.0,
+                                   "currency":  "RUB",
+                                   "footprint_kg":  3.0,
+                                   "metadata":  {
+                                                    "merchant":  "Magnit"
+                                                },
+                                   "created_at":  "2025-10-21T23:15:53.400622+03:00"
+                               }
+                           ],
+                 "Count":  3
+             },
+    "ts":  "2025-10-21T23:36:08.9693134+03:00"
+}
+{
+    "step":  "tx_summary",
+    "resp":  {
+                 "total_kg":  8.0,
+                 "by_category":  {
+                                     "groceries":  6.0,
+                                     "transport_car":  2.0
+                                 },
+                 "count":  3
+             },
+    "ts":  "2025-10-21T23:36:08.9829922+03:00"
+}
+{
+    "step":  "challenge_create(FAILED)",
+    "resp":  {
+                 "error":  "{\"detail\":\"There was an error parsing the body\"}"
+             },
+    "ts":  "2025-10-21T23:36:08.9981635+03:00"
+}
+{
+    "step":  "recycling_list",
+    "resp":  {
+                 "value":  [
+
+                           ],
+                 "Count":  0
+             },
+    "ts":  "2025-10-21T23:36:09.0159798+03:00"
+}
+{
+    "step":  "recycling_create(FAILED)",
+    "resp":  {
+                 "error":  "{\"detail\":\"Admin only\"}"
+             },
+    "ts":  "2025-10-21T23:36:09.0260606+03:00"
+}

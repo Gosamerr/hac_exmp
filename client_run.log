@@ -1,0 +1,43 @@
+﻿**********************
+Начало записи сценария Windows PowerShell
+Время начала: 20251021233608
+Имя пользователя: DESKTOP-QQ2815D\Liza
+Запуск от имени пользователя: DESKTOP-QQ2815D\Liza
+Имя конфигурации: 
+Компьютер: DESKTOP-QQ2815D (Microsoft Windows NT 10.0.19045.0)
+Ведущее приложение: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -noexit -command try { . "c:\Users\Liza\AppData\Local\Programs\Microsoft VS Code\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1" } catch {}
+ИД процесса: 764
+PSVersion: 5.1.19041.6456
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.19041.6456
+BuildVersion: 10.0.19041.6456
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+>> GET http://127.0.0.1:8000/health health
+>> POST http://127.0.0.1:8000/auth/register auth_register
+PS>TerminatingError(Invoke-RestMethod): "{"detail":"Email already registered"}"
+ПРЕДУПРЕЖДЕНИЕ: Request failed: {"detail":"Email already registered"}
+PS>TerminatingError(Invoke-RestMethod): "{"detail":"Email already registered"}"
+>> POST http://127.0.0.1:8000/auth/login auth_login
+>> GET http://127.0.0.1:8000/auth/me auth_me
+>> GET http://127.0.0.1:8000/categories categories_list
+>> POST http://127.0.0.1:8000/transactions tx_create
+>> GET http://127.0.0.1:8000/transactions?limit=20&offset=0 tx_list
+>> GET http://127.0.0.1:8000/transactions/summary tx_summary
+>> POST http://127.0.0.1:8000/challenges challenge_create
+PS>TerminatingError(Invoke-RestMethod): "{"detail":"There was an error parsing the body"}"
+ПРЕДУПРЕЖДЕНИЕ: Request failed: {"detail":"There was an error parsing the body"}
+PS>TerminatingError(Invoke-RestMethod): "{"detail":"There was an error parsing the body"}"
+>> GET http://127.0.0.1:8000/recycling_points recycling_list
+>> POST http://127.0.0.1:8000/recycling_points recycling_create
+PS>TerminatingError(Invoke-RestMethod): "{"detail":"Admin only"}"
+ПРЕДУПРЕЖДЕНИЕ: Request failed: {"detail":"Admin only"}
+PS>TerminatingError(Invoke-RestMethod): "{"detail":"Admin only"}"
+Done! Logs: client_run.log, responses: responses.jsonl
+**********************
+Конец записи протокола Windows PowerShell
+Время окончания: 20251021233609
+**********************
